@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"  
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+	<!-- name 持久化类的类名，table 数据表的表名，MySQL不区分大小写 -->
+	<class name="entity.User" table="user">
+		<id name="id" type="int" >
+			<column name="id" />
+			<generator class="native" />
+		</id>
+		<!-- 映射User类的name属性 -->
+		<property name="username" type="java.lang.String">
+			<column name="username" length="100" />
+		</property>
+		<!-- 映射User类的password属性 -->
+		<property name="password" type="java.lang.String">
+			<column name="password" length="100" />
+		</property>
+		
+		<property name="birthday" column="birthday" type="java.util.Date"/>
+		
+		<set name="rlist" table="user_role" cascade="save-update delete">
+		      <key column="uid" /> 
+		      <many-to-many column="rid" class="entity.Role" />
+		</set>
+	</class>
+	
+	
+	<class name="entity.Role" table="role" >
+	    <id name="id"  type="int" >
+	       <column name="id"/>
+	       <generator class="native"/>
+	    </id>
+	    <property name="name" column="name" />
+	    <property name="desc"  column="desc"/>
+	     <!-- cascade联级操作 -->
+	    <set name="ulist" table="user_role"  cascade="save-update delete"> 
+	      <key column="rid"/>
+	      <many-to-many column="uid" class="entity.User"/>
+	    </set>
+	</class>
+	
+</hibernate-mapping>  
